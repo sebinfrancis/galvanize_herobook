@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -30,6 +32,12 @@ public class HeroBookIT {
                 .content(objectMapper.writeValueAsString(hero)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()
         );
+
+        mockMvc.perform(get("/heroes"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("[0].name").value("superman"))
+                .andExpect(jsonPath("[0].super_power").value("flying"));
 
     }
 }

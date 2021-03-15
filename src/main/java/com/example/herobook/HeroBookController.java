@@ -1,17 +1,27 @@
 package com.example.herobook;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 public class HeroBookController {
+    ArrayList<HeroDto> heroDtos;
 
+    HeroBookController() {
+        heroDtos = new ArrayList<>();
+    }
     @PostMapping("/heroes")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addHero() {
+    public void addHero(@RequestBody HeroDto heroDto) {
+        heroDtos.add(heroDto);
+    }
 
+    @GetMapping("/heroes")
+    public ArrayList<HeroDto> getHeroes()
+    {
+        return heroDtos;
     }
 
 
