@@ -4,24 +4,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class HeroBookController {
-    ArrayList<HeroDto> heroDtos;
+    HeroService heroService;
 
-    HeroBookController() {
-        heroDtos = new ArrayList<>();
+    HeroBookController(HeroService heroService) {
+        this.heroService = heroService;
     }
     @PostMapping("/heroes")
     @ResponseStatus(HttpStatus.CREATED)
     public void addHero(@RequestBody HeroDto heroDto) {
-        heroDtos.add(heroDto);
+       heroService.create(heroDto);
     }
 
     @GetMapping("/heroes")
-    public ArrayList<HeroDto> getHeroes()
+    public List<HeroDto> getHeroes()
     {
-        return heroDtos;
+        return heroService.fetchAll();
     }
 
 
