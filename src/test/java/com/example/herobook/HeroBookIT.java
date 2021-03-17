@@ -65,4 +65,25 @@ public class HeroBookIT {
 
     }
 
+    /* As a visitor, I can view all the villains.
+    When I view all the villains
+    Then I can see names of all villains */
+    @Test
+    public void addVillainTest() throws Exception {
+
+        VillainDto villain = new VillainDto("thanos", "cosmicpower");
+
+        mockMvc.perform(post("/villain")
+                .content(objectMapper.writeValueAsString(villain)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/villain"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(1))
+                .andExpect(jsonPath("[0].name").value("thanos"))
+                .andExpect(jsonPath("[0].special_power").value("cosmicpower"));
+
+    }
+
 }

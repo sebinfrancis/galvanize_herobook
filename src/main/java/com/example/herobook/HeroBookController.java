@@ -10,9 +10,11 @@ import java.util.List;
 @RestController
 public class HeroBookController {
     HeroService heroService;
+    List<VillainDto> villainDtos;
 
     HeroBookController(HeroService heroService) {
         this.heroService = heroService;
+        villainDtos = new ArrayList<>();
     }
     @PostMapping("/heroes")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,4 +42,17 @@ public class HeroBookController {
             }
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }}
+
+    @PostMapping("/villain")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addVillain(@RequestBody VillainDto villainDto) {
+        this.villainDtos.add(villainDto);
+    }
+
+    @GetMapping("/villain")
+    public List<VillainDto> getVillains()
+    {
+        return this.villainDtos;
+    }
+
 }
