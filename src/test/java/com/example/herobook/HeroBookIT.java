@@ -91,6 +91,28 @@ public class HeroBookIT {
 
     }
 
+
+    @Test
+    public void createMultipleAndGetHeroDetails() throws Exception {
+        HeroDto hero1 = new HeroDto("batman", "jumping");
+        HeroDto hero2 = new HeroDto("hulk", "greenboy");
+
+        mockMvc.perform(post("/heroes")
+                .content(objectMapper.writeValueAsString(hero2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/heroes")
+                .content(objectMapper.writeValueAsString(hero1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/heroes/batman"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("batman"))
+                .andExpect(jsonPath("$.super_power").value("jumping"));
+    }
+
+
     @Test
     public void getHeroDetailsForNonexistentUser() throws Exception {
 
