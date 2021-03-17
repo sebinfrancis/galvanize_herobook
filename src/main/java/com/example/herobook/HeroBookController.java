@@ -29,9 +29,9 @@ public class HeroBookController {
     @GetMapping("/heroes/{name}")
     public ResponseEntity<HeroDto> getHeroStats(@PathVariable("name") String name)
     {
-        if (name==null)
-        {return new ResponseEntity(HttpStatus.BAD_REQUEST); }
-        else {
+        if (name == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
             List<HeroDto> heroDtos = heroService.fetchAll();
             for (int i = 0; i < heroDtos.size(); i++) {
                 if (heroDtos.get(i).getName().equals(name)) {
@@ -39,5 +39,6 @@ public class HeroBookController {
                 }
             }
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }}
+        }
+    }
 }
