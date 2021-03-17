@@ -48,6 +48,31 @@ public class HeroBookIT {
 
     }
 
+    @Test
+    public void addMultipleHeroTest() throws Exception {
+
+        HeroDto hero1 = new HeroDto("superman", "flying");
+        HeroDto hero2 = new HeroDto("batman", "jumping");
+
+        mockMvc.perform(post("/heroes")
+                .content(objectMapper.writeValueAsString(hero1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(post("/heroes")
+                .content(objectMapper.writeValueAsString(hero2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/heroes"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("[0].name").value("superman"))
+                .andExpect(jsonPath("[1].name").value("batman"))
+                .andExpect(jsonPath("[0].super_power").value("flying"));
+
+    }
+
     //As a visitor, I can see information about any individual hero so that I can see their stats.
 
     @Test
