@@ -200,4 +200,36 @@ public class HeroBookIT {
                 .andExpect(jsonPath("$.special_power").value("teleportation"));
     }
 
+    @Test
+    public void addUserTest() throws Exception {
+
+        UserDto user1 = new UserDto("Steve", "visitor");
+        UserDto user2 = new UserDto("John", "fan");
+        UserDto user3 = new UserDto("Nicole", "manager");
+
+        mockMvc.perform(post("/users")
+                .content(objectMapper.writeValueAsString(user1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/users")
+                .content(objectMapper.writeValueAsString(user2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/users")
+                .content(objectMapper.writeValueAsString(user3)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(3))
+                .andExpect(jsonPath("[0].name").value("Steve"))
+                .andExpect(jsonPath("[0].role").value("visitor"))
+                .andExpect(jsonPath("[1].role").value("fan"))
+                .andExpect(jsonPath("[2].role").value("manager"));
+
+    }
+
+
+
 }
