@@ -10,12 +10,16 @@ import java.util.List;
 @RestController
 public class HeroBookController {
     HeroService heroService;
-    List<VillainDto> villainDtos;
+    VillainService villainService;
 
-    HeroBookController(HeroService heroService) {
+    HeroBookController(HeroService heroService,VillainService villainService ) {
         this.heroService = heroService;
-        villainDtos = new ArrayList<>();
+        this.villainService = villainService;
+        //villainDtos = new ArrayList<>();
     }
+
+
+
     @PostMapping("/heroes")
     @ResponseStatus(HttpStatus.CREATED)
     public void addHero(@RequestBody HeroDto heroDto) {
@@ -44,15 +48,17 @@ public class HeroBookController {
     }
 
 
-    @PostMapping("/villain")
+    @PostMapping("/villains")
     @ResponseStatus(HttpStatus.CREATED)
     public void addVillain(@RequestBody VillainDto villainDto) {
-        this.villainDtos.add(villainDto);
+        //this.villainDtos.add(villainDto);
+        this.villainService.create(villainDto);
     }
 
-    @GetMapping("/villain")
+    @GetMapping("/villains")
     public List<VillainDto> getVillains()
     {
-        return this.villainDtos;
+        //return this.villainDtos;
+        return villainService.fetchAll();
     }
 }

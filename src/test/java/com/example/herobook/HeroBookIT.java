@@ -127,17 +127,61 @@ public class HeroBookIT {
 
         VillainDto villain = new VillainDto("thanos", "cosmicpower");
 
-        mockMvc.perform(post("/villain")
+        mockMvc.perform(post("/villains")
                 .content(objectMapper.writeValueAsString(villain)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()
                 );
 
-        mockMvc.perform(get("/villain"))
+        mockMvc.perform(get("/villains"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("length()").value(1))
                 .andExpect(jsonPath("[0].name").value("thanos"))
                 .andExpect(jsonPath("[0].special_power").value("cosmicpower"));
 
     }
+
+    @Test
+    public void addMultipleVillainTest() throws Exception {
+
+        VillainDto villain1 = new VillainDto("thanos", "cosmicpower");
+        VillainDto villain2 = new VillainDto("loki", "teleportation");
+
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/villains"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("length()").value(2))
+                .andExpect(jsonPath("[0].name").value("thanos"))
+                .andExpect(jsonPath("[1].name").value("loki"))
+                .andExpect(jsonPath("[0].special_power").value("cosmicpower"));
+
+    }
+
+    /*@Test
+    public void createMultipleAndGetVillainDetails() throws Exception {
+        VillainDto villain1 = new VillainDto("thanos", "cosmicpower");
+        VillainDto villain2 = new VillainDto("loki", "teleportation");
+
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/villains/thanos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("thanos"))
+                .andExpect(jsonPath("$.special_power").value("cosmicpower"));
+    }*/
 
 }
