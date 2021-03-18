@@ -116,7 +116,7 @@ public class HeroBookIT {
     public void getHeroDetailsForNonexistentUser() throws Exception {
 
         mockMvc.perform(get("/heroes/captainamerica"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     /* As a visitor, I can view all the villains.
