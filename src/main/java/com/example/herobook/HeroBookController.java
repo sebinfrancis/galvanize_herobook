@@ -11,13 +11,13 @@ import java.util.List;
 public class HeroBookController {
     HeroService heroService;
     VillainService villainService;
-    List<UserDto> users;
+    UserService userService;
 
-    HeroBookController(HeroService heroService,VillainService villainService ) {
+    HeroBookController(HeroService heroService,VillainService villainService, UserService userService ) {
         this.heroService = heroService;
         this.villainService = villainService;
         //villainDtos = new ArrayList<>();
-        this.users = new ArrayList<>();
+        this.userService = userService;
     }
 
 
@@ -84,12 +84,12 @@ public class HeroBookController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public void addUser(@RequestBody UserDto userDto) {
-        this.users.add(userDto);
+        this.userService.create(userDto);
     }
 
     @GetMapping("/users")
     public List<UserDto> getUsers()
     {
-        return this.users;
+        return userService.fetchAll();
     }
 }
