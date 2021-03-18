@@ -61,4 +61,19 @@ public class HeroBookController {
         //return this.villainDtos;
         return villainService.fetchAll();
     }
+
+    @GetMapping("/villains/{name}")
+    public ResponseEntity<VillainDto> getVillainStatus(@PathVariable("name") String name)
+    {
+        if (name != null) {
+            List<VillainDto> villainDtos = villainService.fetchAll();
+            for (int i = 0; i < villainDtos.size(); i++) {
+                if (villainDtos.get(i).getName().equals(name)) {
+                    return new ResponseEntity<>(villainDtos.get(i), HttpStatus.OK);
+                }
+            }
+
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
 }

@@ -163,16 +163,11 @@ public class HeroBookIT {
                 .andExpect(jsonPath("[0].special_power").value("cosmicpower"));
 
     }
-
-    /*@Test
-    public void createMultipleAndGetVillainDetails() throws Exception {
+    // As a visitor, I can see information about any individual villain so that I can see their stats.
+    @Test
+    public void getVillainDetails() throws Exception {
         VillainDto villain1 = new VillainDto("thanos", "cosmicpower");
-        VillainDto villain2 = new VillainDto("loki", "teleportation");
 
-        mockMvc.perform(post("/villains")
-                .content(objectMapper.writeValueAsString(villain2)).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated()
-                );
         mockMvc.perform(post("/villains")
                 .content(objectMapper.writeValueAsString(villain1)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()
@@ -182,6 +177,27 @@ public class HeroBookIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("thanos"))
                 .andExpect(jsonPath("$.special_power").value("cosmicpower"));
-    }*/
+
+    }
+
+    @Test
+    public void createMultipleAndGetVillainDetails() throws Exception {
+        VillainDto villain1 = new VillainDto("thanos", "cosmicpower");
+        VillainDto villain2 = new VillainDto("loki", "teleportation");
+
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain1)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+        mockMvc.perform(post("/villains")
+                .content(objectMapper.writeValueAsString(villain2)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated()
+                );
+
+        mockMvc.perform(get("/villains/loki"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("loki"))
+                .andExpect(jsonPath("$.special_power").value("teleportation"));
+    }
 
 }
